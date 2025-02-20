@@ -85,7 +85,6 @@ function App() {
             </button>
           ))}
 
-          {/* Caixa de Criação */}
           <div
             style={{
               ...styles.projectCard,
@@ -99,7 +98,6 @@ function App() {
           </div>
         </div>
 
-        {/* Formulário de Criação */}
         {showForm && (
           <form style={styles.form} onSubmit={handleSubmit}>
             <input

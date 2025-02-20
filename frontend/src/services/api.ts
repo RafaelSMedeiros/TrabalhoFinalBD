@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000', // URL do seu backend FastAPI
+  baseURL: 'http://localhost:8000', // URL do backend FastAPI
 });
 
 // Membros
@@ -56,6 +56,7 @@ export const deleteMembro = async (registrodoaluno: number) => {
   }
 };
 
+// MembroProjeto
 export const getMembrosProjeto = async (idprojeto: number) => {
   try {
     const response = await api.get(`/membroprojeto/${idprojeto}`);
