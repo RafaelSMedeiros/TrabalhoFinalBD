@@ -65,6 +65,12 @@ def delete_membro(db: Session, registrodoaluno: int):
     db.commit()
     return {"detail": "Membro deletado com sucesso"}
 
+def get_membro_by_id(db: Session, registrodoaluno: int) -> Membro:
+    db_membro = db.query(Membro).filter(Membro.registrodoaluno == registrodoaluno).first()
+    if not db_membro:
+        return None
+    return db_membro
+
 def create_planilha(db: Session, planilha: PlanilhasPublic):
     db_planilha = Planilhas(
         topicoplanilha=planilha.topicoplanilha,
@@ -366,3 +372,24 @@ def delete_pessoa_auxiliada(db: Session, idpessoa: int):
     db.delete(db_pessoa)
     db.commit()
     return {"message": "Pessoa auxiliada deletada com sucesso"}
+
+def create_membro_projeto(db: Session, membro_projeto: MembroProjetoPublic):
+    db_membro_projeto = MembroProjeto(**membro_projeto.dict())
+    db.add(db_membro_projeto)
+    db.commit()
+    db.refresh(db_membro_projeto)
+    return db_membro_projeto
+
+def get_membros_projeto(db: Session, idprojeto: int):
+    return db.query(MembroProjeto).filter(MembroProjeto.idprojeto == idprojeto).all()
+
+def delete_membro_projeto(db: Session, registrodoaluno: int, idprojeto: int):
+    db_membro_projeto = db.query(MembroProjeto).filter(
+        MembroProjeto.registrodoaluno == registrodoaluno,
+        MembroProjeto.idprojeto == idprojeto
+    ).first()
+    if not db_membro_projeto:
+        return None
+    db.delete(db_membro_projeto)
+    db.commit()
+    return {"message": "Membro removido do projeto com sucesso"}

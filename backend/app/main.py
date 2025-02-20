@@ -56,9 +56,17 @@ def delete_backoffice_route(idbackoffice: int, db: Session = Depends(get_db)):
 def create_membro_route(membro: MembroPublic, db: Session = Depends(get_db)):
     return create_membro(db, membro)
 
+@app.get("/membro/{registrodoaluno}", response_model=MembroSchema, tags=["Membro"])
+def get_membro_by_id_route(registrodoaluno: int, db: Session = Depends(get_db)):
+    db_membro = get_membro_by_id(db, registrodoaluno)
+    if not db_membro:
+        raise HTTPException(status_code=404, detail="Membro não encontrado")
+    return db_membro
+    
 @app.get("/membro/", response_model=List[MembroSchema], tags=["Membro"])
 def get_all_membros_route(db: Session = Depends(get_db)):
     return get_all_membros(db)
+
 
 @app.put("/membro/{registrodoaluno}", response_model=MembroSchema, tags=["Membro"])
 def update_membro_route(registrodoaluno: int, membro: MembroPublic, db: Session = Depends(get_db)):
@@ -329,4 +337,19 @@ def delete_pessoa_auxiliada_route(idpessoa: int, db: Session = Depends(get_db)):
     deleted_response = delete_pessoa_auxiliada(db, idpessoa)
     if not deleted_response:
         raise HTTPException(status_code=404, detail="Pessoa auxiliada não encontrada")
+    return deleted_response
+
+@app.post("/membroprojeto/", response_model=MembroProjetoSchema, tags=["Membro Projeto"])
+def create_membro_projeto_route(membro_projeto: MembroProjetoPublic, db: Session = Depends(get_db)):
+    return create_membro_projeto(db, membro_projeto)
+
+@app.get("/membroprojeto/{idprojeto}", response_model=List[MembroProjetoSchema], tags=["Membro Projeto"])
+def get_membros_projeto_route(idprojeto: int, db: Session = Depends(get_db)):
+    return get_membros_projeto(db, idprojeto)
+
+@app.delete("/membroprojeto/{registrodoaluno}/{idprojeto}", response_model=dict, tags=["Membro Projeto"])
+def delete_membro_projeto_route(registrodoaluno: int, idprojeto: int, db: Session = Depends(get_db)):
+    deleted_response = delete_membro_projeto(db, registrodoaluno, idprojeto)
+    if not deleted_response:
+        raise HTTPException(status_code=404, detail="Membro não encontrado no projeto")
     return deleted_response

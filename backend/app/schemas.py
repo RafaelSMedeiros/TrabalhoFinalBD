@@ -185,3 +185,14 @@ class PessoaAuxiliadaPublic(BaseModel):
     sexopessoa: Optional[str] = None
     tamanhodafamilia: Optional[int] = None
     chavepix: Optional[str] = None
+
+class MembroProjetoSchema(BaseModel):
+    registrodoaluno: int
+    idprojeto: int
+
+    class Config:
+        orm_mode = True
+
+class MembroProjetoPublic(BaseModel):
+    registrodoaluno: int
+    idprojeto: int
